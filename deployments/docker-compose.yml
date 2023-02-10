@@ -1,0 +1,26 @@
+version: '3'  
+
+services:
+  ZincSearch:
+    image: public.ecr.aws/zinclabs/zinc:latest
+    container_name: zinc
+    environment:
+      # - ZINC_DATA_PATH='/data'  
+      # - ZINC_PROMETHEUS_ENABLE=true
+      - ZINC_FIRST_ADMIN_USER=admin
+      - ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123
+    volumes: 
+      - date_zincshearch:/data
+    ports:
+      - 4080:4080
+  # LoadData:
+  #   image: local_ubuntu
+  #   container_name: ubuntu_load_data
+  #   volumes: 
+  #     - ./indexer:/indexer
+
+
+volumes:
+  date_zincshearch:
+
+# docker run -v ./data:/data -e ZINC_DATA_PATH="/data" -p 4080:4080 -e ZINC_FIRST_ADMIN_USER=admin -e ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123 --name zinc public.ecr.aws/zinclabs/zinc:latest

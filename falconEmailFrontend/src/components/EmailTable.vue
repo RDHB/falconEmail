@@ -4,7 +4,7 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <HeaderTableEmail :headers="headers"/>
                 <tbody>
-                   <RowTableEmail v-for="emailInformation in emailsInformation" :email="emailInformation.email" />
+                   <RowTableEmail v-for="emailInformation in emailsInformation" :email="emailInformation._source" />
                 </tbody>
             </table>
         </div>
@@ -14,22 +14,8 @@
 <script setup lang="ts">
 import HeaderTableEmail from './table_email_components/HeaderTableEmail.vue';
 import RowTableEmail from './table_email_components/RowTableEmail.vue';
+import type { EmailInformation } from "@/models/falconEmailsModels"
 import { toRefs } from 'vue';
-
-export interface Email{
-    bcc: String,
-    cc: String,
-    date: String,
-    from: String,
-    message: String,
-    subject: String,
-    to: String
-}
-
-export interface EmailInformation {
-    score: Number,
-    email: Email
-}
 
 const props = defineProps({
     headers: {

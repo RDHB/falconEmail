@@ -1,13 +1,13 @@
 <template>
     <div class="w-full flex flex-col items-center justify-center py-3 bg-slate-400">
-        <!-- Help text -->
-        <span class="w-full text-sm text-gray-100 flex justify-center dark:text-gray-900 font-bold">
+        <span class="text-sm text-gray-100 flex justify-center dark:text-gray-900 font-bold p-2">
                 Showing 
-            <span class="font-semibold text-gray-900 dark:text-white mx-1">1</span> 
-                to 
-            <span class="font-semibold text-gray-900 dark:text-white mx-1">10</span> 
+            <input class="font-semibold text-gray-900 dark:text-white mx-1 w-10 bg-slate-400 text-center border-slate-500 border" :value="maxDataPage"
+            @keyup.enter="emit('searchEmails', inputTextSearch)" /> 
+                emails | Page
+            <input class="font-semibold text-gray-900 dark:text-white mx-1 w-10 bg-slate-400 text-center border-slate-500 border" :value="page"/>
                 of 
-            <span class="font-semibold text-gray-900 dark:text-white mx-1">100</span> Entries
+            <span class="font-semibold text-gray-900 dark:text-white mx-1">{{ totalPages }} </span> 
         </span>
         <div class="w-full inline-flex justify-center mt-2 xs:mt-0">
             <!-- Buttons -->
@@ -23,6 +23,28 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { toRefs } from 'vue';
+
+const props = defineProps({
+    totalPages: {
+        type: Number,
+        required: true
+    },
+    page: {
+        type: Number,
+        required: true
+    },
+    maxDataPage: {
+        type: Number,
+        required: true
+    }
+})
+
+const {totalPages} = toRefs(props)
+const {page} = toRefs(props)
+
+const emit = defineEmits(["searchEmails"])
+</script>
 
 <style scoped></style>

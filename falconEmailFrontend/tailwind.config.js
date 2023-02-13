@@ -23,7 +23,8 @@ module.exports = {
       }
     },
     screens: {
-      "scellphone": "320px",
+      "scellphone": "570px",
+      "xscellphone": "390px",
       // 'laptop': '1024px',
       // 'desktop': '1280px',
     }

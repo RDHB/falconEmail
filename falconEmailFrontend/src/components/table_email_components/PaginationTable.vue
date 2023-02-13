@@ -1,13 +1,18 @@
 <template>
     <div class="w-full flex flex-col items-center justify-center py-3 bg-slate-400">
-        <span class="text-sm text-gray-100 flex justify-center dark:text-gray-900 font-bold p-2">
+        <div class="w-full flex  flex-col xscellphone:flex-row  items-center justify-center">
+            <span class="text-sm text-gray-100 flex justify-center dark:text-gray-900 font-bold p-2 border-gray-900 border-0 xscellphone:border-r-2">
                 Showing 
-            <input type="number" min="1" step="1"  class="font-semibold text-gray-900 dark:text-white mx-1 w-12 bg-slate-400 text-center border-slate-500 border" v-model="maxDataPage" @keyup.enter="setStateMaxDataPage(maxDataPage); getFalconEmails(page, maxDataPage)"/> 
-                emails | Page
-            <input type="number" min="1" :max="totalPages" step="1"  class="font-semibold text-gray-900 dark:text-white mx-1 w-12 bg-slate-400 text-center border-slate-500 border" v-model="page" @keyup.enter="setStatePage(page); getFalconEmails(page, maxDataPage)"/>
+                <input type="number" min="1" step="1"  class="font-semibold text-gray-900 dark:text-white mx-1 w-12 bg-slate-400 text-center border-slate-500 border" v-model="maxDataPage" @keyup.enter="setStateMaxDataPage(maxDataPage); getFalconEmails(page, maxDataPage)"/> 
+                emails  
+            </span>
+            <span class="text-sm text-gray-100 flex justify-center dark:text-gray-900 font-bold p-2">
+                Page
+                <input type="number" min="1" :max="totalPages" step="1"  class="font-semibold text-gray-900 dark:text-white mx-1 w-12 bg-slate-400 text-center border-slate-500 border" v-model="page" @keyup.enter="setStatePage(page); getFalconEmails(page, maxDataPage)"/>
                 of 
-            <span class="font-semibold text-gray-900 dark:text-white mx-1">{{ totalPages }} </span> 
-        </span>
+                <span class="font-semibold text-gray-900 dark:text-white mx-1">{{ totalPages }} </span> 
+            </span>
+        </div>
         <div class="w-full inline-flex justify-center mt-2 xs:mt-0">
             <!-- Buttons -->
             <button class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="paginationPrev(page)">

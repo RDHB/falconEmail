@@ -1,6 +1,6 @@
 import { falconEmailAxiosSearch } from "@/plugins/falconEmailAxios"
 import axios, {AxiosError} from "axios";
-import type { EmailResponseGetAll, ErrorResponse } from "@/models/falconEmailsModels"
+import type { EmailResponseGetAll, EmailResponseSearch, ErrorResponse } from "@/models/falconEmailsModels"
 import configFalconEmail from "@/configs/constantsFalconEmail"
 import constants from "@/configs/constants"
 
@@ -38,7 +38,31 @@ async function getAllEmails(page: number, maxDataPage: number): Promise<EmailRes
     }
 }
 
+async function getEmailsSearch(page: number, maxDataPage: number, search_type: string, term: string): Promise<EmailResponseSearch | ErrorResponse> {
+    try {
+        let response = await falconEmailAxiosSearch.request({
+            method: constants.methodPost,
+            url: `/${configFalconEmail.faconEmailIndex}/search_emails`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                "page": page,
+                "max_data_page": maxDataPage,
+                "search_type": search_type,
+                "term": term,
+                "tag_highlight_name": "highlight"
+            },
+            transformResponse: (data) => JSON.parse(data)
+        })
+        return response.data
+    } catch (e) {
+        return errorHandling(e)
+    }
+}
+
 
 export default {
-    getAllEmails
+    getAllEmails,
+    getEmailsSearch
 }

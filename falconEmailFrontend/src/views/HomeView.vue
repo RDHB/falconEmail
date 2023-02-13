@@ -30,11 +30,4 @@ import { storeToRefs } from "pinia";
 let { emailsInformation, headersTableEmails, page, maxDataPage, totalPages, inputTextSearch} = storeToRefs(useFalconEmailStore())
 
 useFalconEmailStore().initEmailsInformation()
-
-// functions
-// function searchEmails(stringSearch: string) {
-//   if (stringSearch != "") {
-//     alert(page)
-//   }
-// } 
 </script>

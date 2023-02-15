@@ -15,7 +15,7 @@
                 <ul class="w-full flex flex-col gap-2 px-5 py-4 scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-600"> <!-- custom scrolbar -->
                     <li v-for="typeSearch in searchTypes" class="text-white">
                         <div class="flex items-center px-5 py-3 rounded bg-slate-700 hover:bg-gray-600" :class="{'bg-gray-600': typeSearch.name==searchType}" @click="selectSearchType(typeSearch.name)">
-                            <label :for="typeSearch.name" class="text-gray-300 text-left font-bold">
+                            <label :for="typeSearch.name" class="text-cyan-400 text-left font-bold" :class="{'text-cyan-300': typeSearch.name==searchType}">
                                 {{ typeSearch.name }}
                                 <p class="text-xs font-normal text-gray-300 text-justify border-t pt-2">{{ typeSearch.information }}</p>
                             </label>

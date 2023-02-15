@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
 import EmailTable from "@/components/EmailTable.vue"
-import EmailView from "@/components/EmailView.vue"
 import SearchBar from "@/components/SearchBar.vue"
 import PaginationTable from "@/components/table_email_components/PaginationTable.vue"
 import { useFalconEmailStore } from "@/stores/falconEmail"

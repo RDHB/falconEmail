@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import falconEmailAxios from "@/functions/consume_api"
 import type { EmailInformation, EmailResponseGetAll, ErrorResponse } from "@/models/falconEmailsModels"
-import type { SearchTypes } from "@/models/misscelaneos"
+import type { SearchTypes, InstrucctionHelp } from "@/models/misscelaneos"
 
 
 export const useFalconEmailStore = defineStore("falconEmailStore", () => {
@@ -30,22 +30,44 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
             name: "querystring",
             information: "The query language query allows humans to describe complex queries using a simple syntax"
         },
+        // {
+        //     name: "prefix",
+        //     information: "The prefix query finds documents containing terms that start with the provided prefix"
+        // },
+        // {
+        //     name: "wildcard", 
+        //     information: "The wildcard query finds documents containing term that start with the provided wildcard"
+        // },
+        // {
+        //     name: "fuzzy", 
+        //     information: "A fuzzy query is a term query that matches terms within a specified edit distance (Levenshtein distance)"
+        // },
+        // {
+        //     name: "daterange",
+        //     information: "The date range query finds documents containing a date value in the specified field within the specified range."
+        // }
+    ])
+    const instrucctionsHelp = ref<Array<InstrucctionHelp>>([
         {
-            name: "prefix",
-            information: "The prefix query finds documents containing terms that start with the provided prefix"
+            name: '"Word"',
+            information: "When your search for a word, just type the word inside the text box. ",
+            apply: "Apply for: matchphrase, match, term, querystring."
         },
         {
-            name: "wildcard", 
-            information: "The wildcard query finds documents containing term that start with the provided wildcard"
+            name: '"Column:Word"',
+            information: 'When searching for a word in an email in any of the displayed columns, including: message, cc, bcc. Type the column name, followed by the word you want to search for, separated by a colon. ',
+            apply: 'Apply for: querystring.'
         },
         {
-            name: "fuzzy", 
-            information: "A fuzzy query is a term query that matches terms within a specified edit distance (Levenshtein distance)"
+            name: '"-Column:Word"',
+            information: 'When searching for an email that does not contain a word in any of the displayed columns, including: message, cc, bcc. Type " - ", followed by the column name, followed by the word you want to search for, separated by a colon.',
+            apply: 'Apply for: querystring.'
         },
         {
-            name: "daterange",
-            information: "The date range query finds documents containing a date value in the specified field within the specified range."
-        }
+            name: '"Column:Word1 Word2"',
+            information: 'When searching for an email containing any of the words in any of the displayed columns, including: message, cc, bcc. Type the column name, followed by the words you want to search for (separated by a space).',
+            apply: 'Apply for: querystring.'
+        },
     ])
     const headersTableEmails = ref<Array<string>>(["Date", "Subject", "From", "To"])
 
@@ -135,6 +157,7 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
         headersTableEmails,
         searchType,
         searchTypes,
+        instrucctionsHelp,
         initEmailsInformation,
         getFalconEmails,
         setStateMaxDataPage,

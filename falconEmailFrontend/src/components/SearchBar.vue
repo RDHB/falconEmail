@@ -28,7 +28,6 @@ import {faMagnifyingGlass, faCircleInfo} from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { useFalconEmailStore } from "@/stores/falconEmail"
 import { storeToRefs } from "pinia"
-import { ref } from "vue"
 
 
 library.add(faMagnifyingGlass, faCircleInfo)
@@ -37,9 +36,7 @@ const { inputTextSearch, page, maxDataPage } = storeToRefs(useFalconEmailStore()
 const getFalconEmails = useFalconEmailStore().getFalconEmails
 
 function searchBehavior(inputTextSearch: string, page: number, maxDataPage: number) {
-    if (inputTextSearch != ""){
-        getFalconEmails(page, maxDataPage)
-    }
+    getFalconEmails(page, maxDataPage)
 }
 </script>
 

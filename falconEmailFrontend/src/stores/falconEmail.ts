@@ -2,6 +2,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import falconEmailAxios from "@/functions/consume_api"
 import type { EmailInformation, EmailResponseGetAll, ErrorResponse } from "@/models/falconEmailsModels"
+import type { SearchTypes } from "@/models/misscelaneos"
 
 
 export const useFalconEmailStore = defineStore("falconEmailStore", () => {
@@ -11,7 +12,41 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
     const totalPages = ref<number>(0)
     const inputTextSearch = ref<string>("")
     const searchType = ref<string>("match")
-    const searchTypes = ref<Array<string>>(["match", "matchphrase", "term", "querystring", "prefix", "wildcard", "fuzzy", "daterange"])
+    const searchTypesArray = ref<Array<string>>(["match", "matchphrase", "term", "querystring", "prefix", "wildcard", "fuzzy", "daterange"])
+    const searchTypes = ref<Array<SearchTypes>>([
+        {
+            name: "match", 
+            information: "A match query is like a term query, but the input text is analyzed first"
+        },
+        {
+            name: "matchphrase", 
+            information: "The match phrase query is like the phrase query, but the input text is analyzed and a phrase query is built with the terms resulting from the analysis"
+        },
+        {
+            name: "term", 
+            information: "A term query searches for an exact term"
+        }, 
+        {
+            name: "querystring",
+            information: "The query language query allows humans to describe complex queries using a simple syntax"
+        },
+        {
+            name: "prefix",
+            information: "The prefix query finds documents containing terms that start with the provided prefix"
+        },
+        {
+            name: "wildcard", 
+            information: "The wildcard query finds documents containing term that start with the provided wildcard"
+        },
+        {
+            name: "fuzzy", 
+            information: "A fuzzy query is a term query that matches terms within a specified edit distance (Levenshtein distance)"
+        },
+        {
+            name: "daterange",
+            information: "The date range query finds documents containing a date value in the specified field within the specified range."
+        }
+    ])
     const headersTableEmails = ref<Array<string>>(["Date", "Subject", "From", "To"])
 
     function setStateMaxDataPage(maxDataPageC: number){
@@ -61,9 +96,13 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
                     emailsInformation.value = res.data
                     totalPages.value = res.total_pages
                     page.value = res.page
+                    return
                 } 
             })
-        } else if (pageP > 0 && maxDataPageP > 0 && searchTypes.value.includes(searchType.value)){
+            return
+        } 
+        
+        if (pageP > 0 && maxDataPageP > 0 && searchTypesArray.value.includes(searchType.value)){
             falconEmailAxios.getEmailsSearch(pageP, maxDataPageP, searchType.value, inputTextSearch.value)
             .then((response: EmailResponseGetAll | ErrorResponse) => {
                 if (response.code == 200) {
@@ -71,14 +110,20 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
                     emailsInformation.value = res.data
                     totalPages.value = res.total_pages
                     page.value = res.page
+                    return
                 } 
             })
+            return
         }
 
     }
 
     function setDefaultSearchType() {
-        searchType.value = searchTypes.value[0]
+        searchType.value = searchTypes.value[0].name
+    }
+
+    function setSearchType(type: string) {
+        searchType.value = type
     }
 
     return { 
@@ -97,5 +142,6 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
         paginationNext,
         paginationPrev,
         setDefaultSearchType,
+        setSearchType
     }
 })

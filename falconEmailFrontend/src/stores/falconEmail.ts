@@ -1,8 +1,9 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import falconEmailAxios from "@/functions/consume_api"
-import type { EmailInformation, EmailResponseGetAll, ErrorResponse } from "@/models/falconEmailsModels"
+import type { EmailInformation, EmailResponseGetAll, EmailResponseSearch, ErrorResponse } from "@/models/falconEmailsModels"
 import type { SearchTypes, InstrucctionHelp } from "@/models/misscelaneos"
+import console from "console";
 
 
 export const useFalconEmailStore = defineStore("falconEmailStore", () => {
@@ -11,6 +12,8 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
     const maxDataPage = ref<number>(5)
     const totalPages = ref<number>(0)
     const inputTextSearch = ref<string>("")
+    const tagHighlightname= ref<string>("span") 
+    const classTagHighlight= ref<string>("text-cyan-300")
     const searchType = ref<string>("match")
     const searchTypesArray = ref<Array<string>>(["match", "matchphrase", "term", "querystring", "prefix", "wildcard", "fuzzy", "daterange"])
     const searchTypes = ref<Array<SearchTypes>>([
@@ -30,22 +33,6 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
             name: "querystring",
             information: "The query language query allows humans to describe complex queries using a simple syntax"
         },
-        // {
-        //     name: "prefix",
-        //     information: "The prefix query finds documents containing terms that start with the provided prefix"
-        // },
-        // {
-        //     name: "wildcard", 
-        //     information: "The wildcard query finds documents containing term that start with the provided wildcard"
-        // },
-        // {
-        //     name: "fuzzy", 
-        //     information: "A fuzzy query is a term query that matches terms within a specified edit distance (Levenshtein distance)"
-        // },
-        // {
-        //     name: "daterange",
-        //     information: "The date range query finds documents containing a date value in the specified field within the specified range."
-        // }
     ])
     const instrucctionsHelp = ref<Array<InstrucctionHelp>>([
         {
@@ -74,6 +61,7 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
     function setStateMaxDataPage(maxDataPageC: number){
         if (maxDataPageC > 0 && maxDataPageC != null) {
             maxDataPage.value = maxDataPageC
+            page.value = 1
         }
     }
 
@@ -125,10 +113,17 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
         } 
         
         if (pageP > 0 && maxDataPageP > 0 && searchTypesArray.value.includes(searchType.value)){
-            falconEmailAxios.getEmailsSearch(pageP, maxDataPageP, searchType.value, inputTextSearch.value)
-            .then((response: EmailResponseGetAll | ErrorResponse) => {
+            falconEmailAxios.getEmailsSearch(
+                pageP, 
+                maxDataPageP, 
+                searchType.value, 
+                inputTextSearch.value, 
+                tagHighlightname.value, 
+                classTagHighlight.value
+            )
+            .then((response: EmailResponseSearch | ErrorResponse) => {
                 if (response.code == 200) {
-                    const res = response as EmailResponseGetAll
+                    const res = response as EmailResponseSearch
                     emailsInformation.value = res.data
                     totalPages.value = res.total_pages
                     page.value = res.page

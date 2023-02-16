@@ -38,7 +38,7 @@ async function getAllEmails(page: number, maxDataPage: number): Promise<EmailRes
     }
 }
 
-async function getEmailsSearch(page: number, maxDataPage: number, search_type: string, term: string): Promise<EmailResponseSearch | ErrorResponse> {
+async function getEmailsSearch(page: number, maxDataPage: number, search_type: string, term: string, tagHighlightname: string, classTagHighlight: string): Promise<EmailResponseSearch | ErrorResponse> {
     try {
         let response = await falconEmailAxiosSearch.request({
             method: constants.methodPost,
@@ -51,7 +51,8 @@ async function getEmailsSearch(page: number, maxDataPage: number, search_type: s
                 "max_data_page": maxDataPage,
                 "search_type": search_type,
                 "term": term,
-                "tag_highlight_name": "highlight"
+                "tag_highlight_name": tagHighlightname,
+                "class_tag_highlight": classTagHighlight
             },
             transformResponse: (data) => JSON.parse(data)
         })

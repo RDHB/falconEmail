@@ -1,9 +1,8 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 import falconEmailAxios from "@/functions/consume_api"
 import type { EmailInformation, EmailResponseGetAll, EmailResponseSearch, ErrorResponse } from "@/models/falconEmailsModels"
 import type { SearchTypes, InstrucctionHelp } from "@/models/misscelaneos"
-import console from "console";
 
 
 export const useFalconEmailStore = defineStore("falconEmailStore", () => {
@@ -58,16 +57,30 @@ export const useFalconEmailStore = defineStore("falconEmailStore", () => {
     ])
     const headersTableEmails = ref<Array<string>>(["Date", "Subject", "From", "To"])
 
-    function setStateMaxDataPage(maxDataPageC: number){
+    function setStateMaxDataPage(maxDataPageC: number | string){
         if (maxDataPageC > 0 && maxDataPageC != null) {
-            maxDataPage.value = maxDataPageC
+            const maxDataPageCC = maxDataPageC as number
+            maxDataPage.value = maxDataPageCC
             page.value = 1
+            return
+        }
+
+        if (maxDataPageC <= 0 || maxDataPageC == "") {
+            maxDataPage.value = 1
+            return
         }
     }
 
-    function setStatePage(pageC: number){
+    function setStatePage(pageC: number | string){
         if (pageC > 0 && pageC != null) {
-            page.value = pageC
+            const pageCC = pageC as number
+            page.value = pageCC
+            return
+        }
+
+        if (pageC <= 0 || pageC == "") {
+            page.value = 1
+            return
         }
     }
 
